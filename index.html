@@ -10,7 +10,7 @@ html, body { touch-action: manipulation; }
 body{
   font-family: Arial;
   padding: 28px;
-  padding-bottom: 560px;
+  padding-bottom: 620px;
   background: #f8f8f8;
 }
 
@@ -19,7 +19,7 @@ h1{ text-align:center; font-size:34px; }
 #tableInfo{
   text-align:center;
   font-weight:bold;
-  margin-bottom:28px;
+  margin-bottom:20px;
   font-size:24px;
 }
 
@@ -29,7 +29,7 @@ h1{ text-align:center; font-size:34px; }
   gap:30px;
   justify-content:center;
   flex-wrap:wrap;
-  margin-bottom:100px;
+  margin-bottom:120px;
 }
 
 .item{
@@ -77,45 +77,66 @@ h1{ text-align:center; font-size:34px; }
 #orderInner{
   max-width:720px;
   margin:auto;
-  padding:36px 24px;
+  padding:30px 24px;
 }
 
 #orderInner h2{
-  font-size:30px;
+  font-size:28px;
   text-align:center;
   margin-top:0;
 }
 
+/* NAME INPUT — FIXED */
+#customerName{
+  width:100%;
+  padding:18px;
+  font-size:26px;        /* bigger */
+  font-weight:900;      /* bold */
+  color:#000;           /* black */
+  margin-bottom:18px;
+  border-radius:14px;
+  border:2px solid #333;
+}
+
 /* ORDER LIST */
 #orderList{
-  max-height:300px;
+  max-height:260px;
   overflow-y:auto;
-  margin-bottom:28px;
+  margin-bottom:20px;
 }
 
 .order-item{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin:18px 0;
-  padding:18px 22px;
+  margin:16px 0;
+  padding:16px 20px;
   background:#f9f9f9;
-  border-radius:18px;
+  border-radius:16px;
 }
 
 .order-name{
-  font-size:34px;
+  font-size:28px;
   font-weight:800;
 }
 
 .remove-btn{
-  width:64px;
-  height:64px;
+  width:56px;
+  height:56px;
   border-radius:50%;
-  font-size:34px;
+  font-size:30px;
   border:none;
   background:#e74c3c;
   color:#fff;
+}
+
+/* TOTAL PRICE */
+#totalPrice{
+  text-align:center;
+  font-size:28px;
+  font-weight:900;
+  margin:14px 0;
+  color:#000;
 }
 
 /* SUBMIT */
@@ -123,8 +144,8 @@ h1{ text-align:center; font-size:34px; }
   display:block;
   margin:0 auto;
   width:80%;
-  padding:28px;
-  font-size:30px;
+  padding:26px;
+  font-size:28px;
   font-weight:bold;
   background:#27ae60;
   color:#fff;
@@ -153,7 +174,8 @@ h1{ text-align:center; font-size:34px; }
 }
 
 .popup-icon{ font-size:110px; }
-.popup-text{ font-size:34px; font-weight:bold; margin-top:20px; }
+.popup-text{ font-size:34px; font-weight:bold; margin-top:16px; }
+.popup-price{ font-size:30px; font-weight:900; margin-top:10px; }
 
 .accepted{ color:#27ae60; }
 .rejected{ color:#e74c3c; }
@@ -171,116 +193,15 @@ h1{ text-align:center; font-size:34px; }
     <img src="https://raw.githubusercontent.com/paiotorr/Paiotorr/main/image/Pizza.jpg">
     <h3>Pizza</h3>
     <p>₹199</p>
-    <button class="add-btn" onclick="addItem('Pizza')">➕ ADD</button>
+    <button class="add-btn" onclick="addItem('Pizza',199)">➕ ADD</button>
   </div>
 
   <div class="item">
     <img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
     <h3>Burger</h3>
     <p>₹99</p>
-    <button class="add-btn" onclick="addItem('Burger')">➕ ADD</button>
+    <button class="add-btn" onclick="addItem('Burger',99)">➕ ADD</button>
   </div>
-  
-  <div class="item">
-    <img src="https://raw.githubusercontent.com/paiotorr/Paiotorr/main/image/Pizza.jpg">
-    <h3>Pizza</h3>
-    <p>₹199</p>
-    <button class="add-btn"
-      onclick="addItem('Pizza','https://raw.githubusercontent.com/paiotorr/Paiotorr/main/image/Pizza.jpg')">
-      ➕ ADD
-    </button>
-  </div>
-
-  <div class="item">
-    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
-    <h3>Burger</h3>
-    <p>₹99</p>
-    <button class="add-btn"
-      onclick="addItem('Burger','https://images.unsplash.com/photo-1550547660-d9450f859349')">
-      ➕ ADD
-    </button>
-  </div>
-  
-  <div class="item">
-    <img src="https://raw.githubusercontent.com/paiotorr/Paiotorr/main/image/Pizza.jpg">
-    <h3>Pizza</h3>
-    <p>₹199</p>
-    <button class="add-btn"
-      onclick="addItem('Pizza','https://raw.githubusercontent.com/paiotorr/Paiotorr/main/image/Pizza.jpg')">
-      ➕ ADD
-    </button>
-  </div>
-
-  <div class="item">
-    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
-    <h3>Burger</h3>
-    <p>₹99</p>
-    <button class="add-btn"
-      onclick="addItem('Burger','https://images.unsplash.com/photo-1550547660-d9450f859349')">
-      ➕ ADD
-    </button>
-  </div>
-  
-  <div class="item">
-    <img src="https://raw.githubusercontent.com/paiotorr/Paiotorr/main/image/Pizza.jpg">
-    <h3>Pizza</h3>
-    <p>₹199</p>
-    <button class="add-btn"
-      onclick="addItem('Pizza','https://raw.githubusercontent.com/paiotorr/Paiotorr/main/image/Pizza.jpg')">
-      ➕ ADD
-    </button>
-  </div>
-
-  <div class="item">
-    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
-    <h3>Burger</h3>
-    <p>₹99</p>
-    <button class="add-btn"
-      onclick="addItem('Burger','https://images.unsplash.com/photo-1550547660-d9450f859349')">
-      ➕ ADD
-    </button>
-  </div>
-  
-  <div class="item">
-    <img src="https://raw.githubusercontent.com/paiotorr/Paiotorr/main/image/Pizza.jpg">
-    <h3>Pizza</h3>
-    <p>₹199</p>
-    <button class="add-btn"
-      onclick="addItem('Pizza','https://raw.githubusercontent.com/paiotorr/Paiotorr/main/image/Pizza.jpg')">
-      ➕ ADD
-    </button>
-  </div>
-
-  <div class="item">
-    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
-    <h3>Burger</h3>
-    <p>₹99</p>
-    <button class="add-btn"
-      onclick="addItem('Burger','https://images.unsplash.com/photo-1550547660-d9450f859349')">
-      ➕ ADD
-    </button>
-  </div>
-  
-  <div class="item">
-    <img src="https://raw.githubusercontent.com/paiotorr/Paiotorr/main/image/Pizza.jpg">
-    <h3>Pizza</h3>
-    <p>₹199</p>
-    <button class="add-btn"
-      onclick="addItem('Pizza','https://raw.githubusercontent.com/paiotorr/Paiotorr/main/image/Pizza.jpg')">
-      ➕ ADD
-    </button>
-  </div>
-
-  <div class="item">
-    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349">
-    <h3>Burger</h3>
-    <p>₹99</p>
-    <button class="add-btn"
-      onclick="addItem('Burger','https://images.unsplash.com/photo-1550547660-d9450f859349')">
-      ➕ ADD
-    </button>
-  </div>
-  
 
 </div>
 
@@ -288,7 +209,13 @@ h1{ text-align:center; font-size:34px; }
 <div id="orderBox">
   <div id="orderInner">
     <h2>Your Order</h2>
+
+    <input id="customerName" placeholder="Enter your name">
+
     <div id="orderList"></div>
+
+    <div id="totalPrice"></div>
+
     <button class="submit-btn" onclick="submitOrder()">🛎 SUBMIT ORDER</button>
   </div>
 </div>
@@ -298,15 +225,13 @@ h1{ text-align:center; font-size:34px; }
   <div class="popup-box">
     <div id="popupIcon" class="popup-icon"></div>
     <div id="popupText" class="popup-text"></div>
+    <div id="popupPrice" class="popup-price"></div>
   </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
-
-/* Disable double-click zoom */
-document.addEventListener("dblclick", e => e.preventDefault(), { passive:false });
 
 const app = initializeApp({
   apiKey:"AIzaSyDSf51jWs3I4AXX0U8M_HxKn4VtRYg72xs",
@@ -315,20 +240,25 @@ const app = initializeApp({
 });
 const db = getFirestore(app);
 
-const orderList = document.getElementById("orderList");
 const popup = document.getElementById("popup");
 const popupIcon = document.getElementById("popupIcon");
 const popupText = document.getElementById("popupText");
+const popupPrice = document.getElementById("popupPrice");
 
 const table =
   new URLSearchParams(location.search).get("table") || "Unknown";
 document.getElementById("tableInfo").innerText = "Table: " + table;
 
-/* ORDER DATA */
 let order = {};
+let totalAmount = 0;
+let priceTimer = null;
 
-window.addItem = (name)=>{
-  order[name] ? order[name].qty++ : order[name]={name,qty:1};
+window.addItem = (name, price)=>{
+  if(order[name]){
+    order[name].qty++;
+  }else{
+    order[name] = { name, price, qty: 1 };
+  }
   render();
 };
 
@@ -341,17 +271,41 @@ window.removeItem = (name)=>{
 };
 
 function render(){
-  orderList.innerHTML="";
+  const list = document.getElementById("orderList");
+  list.innerHTML="";
+  totalAmount = 0;
+
   Object.values(order).forEach(o=>{
-    orderList.innerHTML+=`
+    totalAmount += o.price * o.qty;
+    list.innerHTML+=`
       <div class="order-item">
         <span class="order-name">${o.name} × ${o.qty}</span>
         <button class="remove-btn" onclick="removeItem('${o.name}')">✖</button>
       </div>`;
   });
+
+  if(totalAmount>0){
+    document.getElementById("totalPrice").innerText =
+      "Total: ₹" + totalAmount;
+    startPriceTimer();
+  }else{
+    document.getElementById("totalPrice").innerText = "";
+  }
+}
+
+function startPriceTimer(){
+  if(priceTimer) clearTimeout(priceTimer);
+  priceTimer = setTimeout(()=>{
+    document.getElementById("totalPrice").innerText = "";
+  }, 10 * 60 * 1000);
 }
 
 window.submitOrder = async ()=>{
+  const name = document.getElementById("customerName").value.trim();
+  if(!name){
+    alert("Please enter your name");
+    return;
+  }
   if(!Object.keys(order).length){
     alert("No items selected");
     return;
@@ -359,37 +313,37 @@ window.submitOrder = async ()=>{
 
   const ref = await addDoc(collection(db,"orders"),{
     table,
-    items:Object.values(order),
+    customer: name,
+    items: Object.values(order),
+    total: totalAmount,
     status:"pending",
-    time:new Date().toLocaleString()
+    time: new Date().toLocaleString()
   });
 
   onSnapshot(doc(db,"orders",ref.id),(snap)=>{
     if(!snap.exists()) return;
+    const s = snap.data().status;
 
-    const status = snap.data().status;
-
-    if(status === "accepted"){
-      showPopup(true);
+    if(s==="accepted"){
+      showPopup(true, snap.data().total);
     }
-
-    if(status === "rejected"){
+    if(s==="rejected"){
       showPopup(false);
     }
-
-    /* pending → do nothing */
   });
 
-  order={};
+  order = {};
   render();
+  document.getElementById("customerName").value="";
 };
 
-function showPopup(ok){
+function showPopup(ok, price=0){
   popup.style.display="flex";
   popupIcon.innerHTML = ok ? "✔" : "✖";
   popupIcon.className = "popup-icon " + (ok?"accepted":"rejected");
   popupText.innerText = ok ? "ORDER ACCEPTED" : "ORDER CANCELLED";
-  setTimeout(()=>popup.style.display="none",2000);
+  popupPrice.innerText = ok ? ("Total Price: ₹" + price) : "";
+  setTimeout(()=>popup.style.display="none",3000);
 }
 </script>
 

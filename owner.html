@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Owner Dashboard</title>
+
+<style>
+body{font-family:Arial;background:#f4f4f4;padding:20px;}
+.order{background:#fff;padding:15px;margin:15px 0;border-radius:6px;}
+.itemRow{display:flex;align-items:center;margin:5px 0;}
+.itemRow img{width:60px;height:60px;object-fit:cover;margin-right:10px;border-radius:4px;}
+button{margin-right:10px;padding:6px 10px;}
+.accept{background:green;color:#fff;border:none;}
+.reject{background:red;color:#fff;border:none;}
+</style>
+</head>
+
+<body>
+
+<h1>📋 Owner Orders</h1>
+<div id="orders"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDSf51jWs3I4AXX0U8M_HxKn4VtRYg72xs",
+  authDomain: "hotel-order-7f1f2.firebaseapp.com",
+  projectId: "hotel-order-7f1f2"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Live orders
+onSnapshot(collection(db, "orders"), (snap) => {
+  orders.innerHTML = "";
+  snap.forEach(d => {
+    const o = d.data();
+
+    let itemsHtml = "";
+    o.items.forEach(i => {
+      itemsHtml += `
+        <div class="itemRow">
+          <img src="${i.img}">
+          <span>${i.name}</span>
+        </div>`;
+    });
+
+    orders.innerHTML += `
+      <div class="order">
+        <b>Table:</b> ${o.table}<br><br>
+        ${itemsHtml}<br>
+        <b>Status:</b> ${o.status}<br><br>
+        <button class="accept" onclick="updateStatus('${d.id}','accepted')">Accept</button>
+        <button class="reject" onclick="updateStatus('${d.id}','rejected')">Reject</button>
+      </div>`;
+  });
+});
+
+window.updateStatus = async (id, status) => {
+  await updateDoc(doc(db, "orders", id), { status });
+};
+</script>
+
+</body>
+</html>

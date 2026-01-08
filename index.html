@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Paiotorr</title>
+
+<style>
+html, body { touch-action: manipulation; }
+
+body{
+  font-family: Arial;
+  padding:28px;
+  padding-bottom:720px;
+  background:#f8f8f8;
+}
+
+h1{text-align:center;font-size:34px;}
+#tableInfo{text-align:center;font-size:24px;font-weight:bold;margin-bottom:20px;}
+
+.menu{
+  display:flex;
+  gap:30px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-bottom:120px;
+}
+.item{
+  background:#fff;
+  width:260px;
+  padding:20px;
+  border-radius:20px;
+  border:2px solid #ddd;
+  text-align:center;
+}
+.item img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border-radius:16px;
+}
+.item h3{font-size:28px;}
+.item p{font-size:24px;}
+.add-btn{
+  width:100%;
+  padding:20px;
+  font-size:26px;
+  font-weight:bold;
+  border:none;
+  border-radius:16px;
+  background:#3498db;
+  color:#fff;
+}
+
+#orderBox{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:#fff;
+  border-top:4px solid #27ae60;
+}
+#orderInner{
+  max-width:720px;
+  margin:auto;
+  padding:30px 24px;
+}
+
+#customerName{
+  width:100%;
+  padding:18px;
+  font-size:26px;
+  font-weight:900;
+  border-radius:14px;
+  border:2px solid #333;
+  margin-bottom:16px;
+}
+
+.order-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px;
+  background:#f9f9f9;
+  border-radius:16px;
+  margin-bottom:10px;
+}
+.order-name{font-size:26px;font-weight:800;}
+.remove-btn{
+  width:52px;height:52px;border-radius:50%;
+  font-size:28px;border:none;
+  background:#e74c3c;color:#fff;
+}
+
+#totalPrice{
+  text-align:center;
+  font-size:28px;
+  font-weight:900;
+  margin:12px 0;
+}
+
+.payment{
+  margin:18px 0;
+  font-size:24px;
+  font-weight:900;
+}
+.payment label{
+  display:block;
+  padding:16px;
+  border:2px solid #ccc;
+  border-radius:14px;
+  margin-bottom:10px;
+}
+.payment input{transform:scale(1.6);margin-right:12px;}
+
+.submit-btn{
+  width:80%;
+  margin:16px auto;
+  display:block;
+  padding:26px;
+  font-size:28px;
+  font-weight:bold;
+  border:none;
+  border-radius:22px;
+  background:#27ae60;
+  color:#fff;
+}
+
+/* POPUP */
+#popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.popup-box{
+  background:#fff;
+  padding:50px;
+  border-radius:30px;
+  text-align:center;
+}
+.popup-icon{font-size:110px;}
+.popup-text{font-size:34px;font-weight:900;}
+.popup-price{font-size:30px;font-weight:900;}
+.accepted{color:#27ae60;}
+.rejected{color:#e74c3c;}
+</style>
+</head>
+
+<body>
+
+<h1>🍽 Paiotorr</h1>
+<p id="tableInfo"></p>
+
+<div class="menu">
+  <div class="item">
+    <img src="https://raw.githubusercontent.com/paiotorr/Paiotorr/main/image/Pizza.jpg">
+    <h3>Pizza</h3>
+    <p>₹1</p>
+    <button class="add-btn" onclick="addItem('Pizza',1)">➕ ADD</button>
+  </div>
+</div>
+
+<div id="orderBox">
+  <div id="orderInner">
+
+    <input id="customerName" placeholder="Enter your name">
+
+    <div id="orderList"></div>
+    <div id="totalPrice"></div>
+
+    <div class="payment">
+      <label><input type="radio" name="pay" checked onclick="selectPay('Cash')"> 💵 Cash</label>
+      <label><input type="radio" name="pay" onclick="selectPay('UPI')"> 📱 UPI</label>
+    </div>
+
+    <button class="submit-btn" onclick="handleSubmit()">🛎 SUBMIT ORDER</button>
+
+  </div>
+</div>
+
+<div id="popup">
+  <div class="popup-box">
+    <div id="popupIcon" class="popup-icon"></div>
+    <div id="popupText" class="popup-text"></div>
+    <div id="popupPrice" class="popup-price"></div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("dblclick", e => e.preventDefault(), { passive:false });
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getFirestore, collection, addDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+const UPI_ID="dipankargogoi289-2@okaxis";
+const PAYEE="Paiotorr";
+
+const app=initializeApp({
+  apiKey:"AIzaSyDSf51jWs3I4AXX0U8M_HxKn4VtRYg72xs",
+  authDomain:"hotel-order-7f1f2.firebaseapp.com",
+  projectId:"hotel-order-7f1f2"
+});
+const db=getFirestore(app);
+
+const table=new URLSearchParams(location.search).get("table")||"Unknown";
+tableInfo.innerText="Table: "+table;
+
+let order={},total=0,payment="Cash";
+
+window.addItem=(n,p)=>{order[n]?order[n].qty++:order[n]={name:n,price:p,qty:1};render();};
+window.removeItem=n=>{order[n].qty--;if(order[n].qty<=0)delete order[n];render();};
+
+function render(){
+  orderList.innerHTML="";total=0;
+  Object.values(order).forEach(o=>{
+    total+=o.price*o.qty;
+    orderList.innerHTML+=`
+      <div class="order-item">
+        <span class="order-name">${o.name} × ${o.qty}</span>
+        <button class="remove-btn" onclick="removeItem('${o.name}')">✖</button>
+      </div>`;
+  });
+  totalPrice.innerText=total?"Total: ₹"+total:"";
+}
+
+window.selectPay=m=>payment=m;
+
+window.handleSubmit=()=>{
+  if(!customerName.value||!total)return alert("Fill name & add items");
+
+  if(payment==="UPI"){
+    location.href=`upi://pay?pa=${UPI_ID}&pn=${PAYEE}&am=${total}&cu=INR`;
+    setTimeout(()=>confirm("Have you completed the UPI payment?")&&submitOrder(),1200);
+  }else submitOrder();
+};
+
+async function submitOrder(){
+  const ref=await addDoc(collection(db,"orders"),{
+    table,
+    customer:customerName.value,
+    items:Object.values(order),
+    total,
+    payment,
+    status:"pending",
+    time:new Date().toLocaleString()
+  });
+
+  onSnapshot(doc(db,"orders",ref.id),(snap)=>{
+    if(!snap.exists())return;
+    const s=snap.data().status;
+    if(s==="accepted")showPopup(true,snap.data().total);
+    if(s==="rejected")showPopup(false,snap.data().total);
+  });
+
+  order={};render();customerName.value="";
+}
+
+function showPopup(ok,price){
+  popup.style.display="flex";
+  popupIcon.innerText=ok?"✔":"✖";
+  popupIcon.className="popup-icon "+(ok?"accepted":"rejected");
+  popupText.innerText=ok?"ORDER ACCEPTED":"ORDER REJECTED";
+  popupPrice.innerText="Total: ₹"+price;
+  setTimeout(()=>popup.style.display="none",4000);
+}
+</script>
+
+</body>
+</html>

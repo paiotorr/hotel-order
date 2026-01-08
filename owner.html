@@ -6,24 +6,22 @@
 
 <style>
 body{
-  font-family: Arial, sans-serif;
+  font-family:Arial;
   background:#f4f4f4;
   padding:20px;
 }
-h1{text-align:center;}
 .order{
   background:#fff;
   padding:15px;
   margin:15px 0;
   border-radius:6px;
-  border:1px solid #ddd;
 }
 button{
   margin-right:10px;
   padding:6px 10px;
 }
-.accept{background:green;color:#fff;border:none;}
-.reject{background:red;color:#fff;border:none;}
+.accept{background:green;color:white;border:none;}
+.reject{background:red;color:white;border:none;}
 </style>
 </head>
 
@@ -54,37 +52,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const ordersDiv = document.getElementById("orders");
+const ordersDiv=document.getElementById("orders");
 
-onSnapshot(collection(db, "orders"), (snapshot) => {
-  ordersDiv.innerHTML = "";
-  snapshot.forEach((docSnap) => {
-    const data = docSnap.data();
-
-    let itemsHtml = "";
-    data.items.forEach(item => {
-      itemsHtml += `<li>${item}</li>`;
-    });
-
-    ordersDiv.innerHTML += `
+onSnapshot(collection(db,"orders"),(snap)=>{
+  ordersDiv.innerHTML="";
+  snap.forEach(d=>{
+    const o=d.data();
+    let items="";
+    o.items.forEach(i=>items+=`<li>${i}</li>`);
+    ordersDiv.innerHTML+=`
       <div class="order">
-        <b>Table:</b> ${data.table}<br><br>
-        <b>Items:</b>
-        <ul>${itemsHtml}</ul>
-        <b>Status:</b> ${data.status}<br><br>
-        <button class="accept" onclick="acceptOrder('${docSnap.id}')">Accept</button>
-        <button class="reject" onclick="rejectOrder('${docSnap.id}')">Reject</button>
-      </div>
-    `;
+        <b>Table:</b> ${o.table}<br>
+        <ul>${items}</ul>
+        <b>Status:</b> ${o.status}<br><br>
+        <button class="accept" onclick="update('${d.id}','accepted')">Accept</button>
+        <button class="reject" onclick="update('${d.id}','rejected')">Reject</button>
+      </div>`;
   });
 });
 
-window.acceptOrder = async (id) => {
-  await updateDoc(doc(db, "orders", id), { status: "accepted" });
-};
-
-window.rejectOrder = async (id) => {
-  await updateDoc(doc(db, "orders", id), { status: "rejected" });
+window.update=async(id,status)=>{
+  await updateDoc(doc(db,"orders",id),{status});
 };
 </script>
 
